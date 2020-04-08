@@ -43,3 +43,23 @@ s = "s" if len(users) > 1 else ""
 print(f"user{s} {max_users} completed {max_complete} TODOs")
 
 print(max_users)
+
+# Define a function to filter out completed TODOs
+# of users with max completed TODOS.
+"""
+The filter() function takes a function and a sequence as arguments and returns an iterable, only yielding the items in sequence for which function returns True.
+If None is passed instead of a function, all the items of the sequence which evaluates to False are removed.
+To produce the result at once we can use the list() function.
+"""
+def keep(todo):
+    is_complete = todo["completed"]
+    has_max_count = str(todo["userId"]) in users
+    return is_complete and has_max_count
+
+print(list(filter(keep, todos)))
+
+# Write filtered TODOs to file.
+with open("filtered_data_file.json", "w") as data_file:
+    filtered_todos = list(filter(keep, todos))
+    json.dump(filtered_todos, data_file, indent=2)
+
